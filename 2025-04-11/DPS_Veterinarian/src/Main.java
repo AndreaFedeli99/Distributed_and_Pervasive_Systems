@@ -1,21 +1,24 @@
+import java.util.ArrayList;
+import java.util.Random;
+
 public class Main {
     public static void main(String[] args) {
-        Room r = new Room();
+        Room room = new Room();
 
-        Animal cat1 = new Animal(1, r);
-        Animal cat2 = new Animal(1, r);
+        Random r = new Random();
+        final int animalNumber = 11;
+        int catIndex = 0;
+        int dogIndex = 0;
+        ArrayList<Animal> animals = new ArrayList<Animal>();
 
-        Animal dog1 = new Animal(2, r);
-        Animal dog2 = new Animal(2, r);
-        Animal dog3 = new Animal(2, r);
-        Animal dog4 = new Animal(2, r);
+        for (int i = 0; i < animalNumber; i++) {
+            if (r.nextBoolean())
+                animals.add(new Animal("cat", catIndex++, room));
+            else
+                animals.add(new Animal("dog", dogIndex++, room));
+        }
 
-        cat1.start();
-        cat2.start();
-
-        dog1.start();
-        dog2.start();
-        dog3.start();
-        dog4.start();
+        for (Animal a : animals)
+            a.start();
     }
 }

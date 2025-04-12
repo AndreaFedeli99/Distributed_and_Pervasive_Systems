@@ -5,42 +5,32 @@ public class Room {
     }
 
     public synchronized void enterRoom(Animal a) throws InterruptedException {
-        while ((a.type == 1 && (dogsNumber > 0 || catsNumber > 0)) || (a.type == 2 && (catsNumber > 0)) || (a.type == 2 && dogsNumber >= 3)) {
-            if (a.type == 1) {
-                System.out.println("A CAT IS WAITING...");
-            }
-            else {
-                System.out.println("A DOG IS WAITING...");
-            }
-            System.out.println("Number of cats: " + catsNumber);
-            System.out.println("Number of dogs: " + dogsNumber);
+        while (checkCondition(a)) {
+            System.out.printf("%s is waiting (%d cats - %d dogs)\n", a.toString(), catsNumber, dogsNumber);
             wait();
         }
 
-        if (a.type == 1) {
+        if (a.type.equals("cat"))
             catsNumber++;
-            System.out.println("A CAT ENTERS THE ROOM...");
-        } else {
+        else
             dogsNumber++;
-            System.out.println("A DOG ENTERS THE ROOM...");
-        }
-        System.out.println("Number of cats: " + catsNumber);
-        System.out.println("Number of dogs: " + dogsNumber);
+        System.out.printf("%s enters the room (%d cats - %d dogs)\n", a.toString(), catsNumber, dogsNumber);
     }
 
     public synchronized void exitRoom(Animal a) {
-        if (a.type == 1) {
+        if (a.type.equals("cat"))
             catsNumber--;
-            System.out.println("A CAT EXITS THE ROOM...");
-        }
-        if (a.type == 2) {
-            System.out.println("A DOG EXITS THE ROOM...");
+        else
             dogsNumber--;
-        }
-
-        System.out.println("Number of cats: " + catsNumber);
-        System.out.println("Number of dogs: " + dogsNumber);
+        System.out.printf("%s exits the room (%d cats - %d dogs)\n", a.toString(), catsNumber, dogsNumber);
         notifyAll();
+    }
+
+    private synchronized boolean checkCondition(Animal a) {
+        if (a.type.equals("cat"))
+            return (dogsNumber > 0 || catsNumber > 0);
+        else
+            return (catsNumber > 0 || dogsNumber >= 3);
     }
 
     private int dogsNumber;

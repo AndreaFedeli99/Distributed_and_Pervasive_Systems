@@ -2,8 +2,9 @@ import java.util.Random;
 
 public class Animal extends Thread {
 
-    public Animal (int type, Room room) {
+    public Animal (String type, int id, Room room) {
         this.room = room;
+        this.id = id;
         this.type = type;
     }
 
@@ -19,6 +20,12 @@ public class Animal extends Thread {
         room.exitRoom(this);
     }
 
-    private Room room;
-    public int type;
+    @Override
+    public String toString() {
+        return this.type + " " + id;
+    }
+
+    private final Room room;
+    private final int id;
+    public String type;
 }
